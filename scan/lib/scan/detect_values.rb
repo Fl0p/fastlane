@@ -147,6 +147,12 @@ module Scan
           end
 
           # Get OS version corresponding to build
+          UI.verbose("runtime_build: '#{runtime_build}'")
+          build_os_version = FastlaneCore::DeviceManager.runtime_build_os_versions
+          build_os_version.each do |key, value|
+            UI.verbose("key: '#{key}' value: '#{value}'")
+          end
+
           Gem::Version.new(FastlaneCore::DeviceManager.runtime_build_os_versions[runtime_build])
         end
       end
@@ -169,7 +175,7 @@ module Scan
         .reverse
         .sort_by! { |sim| Gem::Version.new(sim.os_version) }
         .last
-      UI.verbose("result: #{result}")
+      UI.verbose("result: '#{result}' is nil?: #{result.nil?}")
       result
     end
 

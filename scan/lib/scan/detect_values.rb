@@ -158,6 +158,7 @@ module Scan
 
     def self.compatibility_constraint(sim, device_name)
       latest_os = default_os_version(sim.os_type)
+      UI.verbose("latest_os: #{latest_os}")
       sim.name == device_name && (latest_os.nil? || Gem::Version.new(sim.os_version) <= latest_os)
     end
 
@@ -185,6 +186,7 @@ module Scan
     def self.detect_simulator(devices, requested_os_type, deployment_target_key, default_device_name, simulator_type_descriptor)
       clear_cache
 
+      UI.verbose("detect_simulator: #{devices} #{requested_os_type} #{deployment_target_key} #{default_device_name} #{simulator_type_descriptor}")
       deployment_target_version = get_deployment_target_version(deployment_target_key)
       simulators = filter_simulators(
         FastlaneCore::DeviceManager.simulators(requested_os_type).tap do |array|
@@ -212,6 +214,8 @@ module Scan
           pieces = device_string.split(regular_expression_for_split_on_whitespace_followed_by_parenthesized_version)
 
           display_device = "'#{device_string}'"
+          UI.verbose("display_device: #{display_device}")
+          UI.verbose("pieces: #{pieces.first} #{pieces.last}")
 
           set + (
             if pieces.count == 0

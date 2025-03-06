@@ -153,7 +153,9 @@ module Scan
             UI.verbose("key: '#{key}' value: '#{value}'")
           end
 
-          Gem::Version.new(FastlaneCore::DeviceManager.runtime_build_os_versions[runtime_build])
+          result = Gem::Version.new(FastlaneCore::DeviceManager.runtime_build_os_versions[runtime_build])
+          UI.verbose("default_os_version result: '#{result}' result.nil?: #{result.nil?}")
+          result
         end
       end
     end

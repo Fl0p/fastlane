@@ -124,6 +124,7 @@ module Scan
         # `match list` subcommand added in Xcode 15
         if error.include?('match list')
 
+
           # list SDK version for currently running Xcode
           sdks_output, status = Open3.capture2('xcodebuild -showsdks -json')
           sdk_version = begin
@@ -154,7 +155,7 @@ module Scan
           end
 
           os_version = FastlaneCore::DeviceManager.runtime_build_os_versions[runtime_build]
-          UI.verbose("!!!os_version: '#{os_version}' #{os_version.nil?}")
+          UI.verbose("!!!os_version: '#{os_version}' os_version.nil?: #{os_version.nil?}")
           result = Gem::Version.new(os_version)
           UI.verbose("default_os_version result: '#{result}' result.nil?: #{result.nil?}")
           result
@@ -168,9 +169,9 @@ module Scan
 
     def self.compatibility_constraint(sim, device_name)
       latest_os = default_os_version(sim.os_type)
-      UI.verbose("latest_os: '#{latest_os}' #{latest_os.nil?}  sim.name: '#{sim.name}' sim.os_version: '#{sim.os_version}' device_name: '#{device_name}'  ")
+      UI.verbose("Simulator name: '#{sim.name}' os_version: '#{sim.os_version}' is compatible with device_name: '#{device_name}' and latest_os: '#{latest_os}'")
       result = sim.name == device_name && (latest_os.nil? || Gem::Version.new(sim.os_version) <= latest_os)
-      UI.verbose("compatibility_constraint result: '#{result}' result.nil?: #{result.nil?}")
+      UI.verbose("compatible? '#{result}'")
       result
     end
 
@@ -181,11 +182,7 @@ module Scan
       UI.verbose("compatible simulators: '#{result}'")
       result = result
         .reverse
-      UI.verbose("reversed compatible simulators: '#{result}'")
-      result = result
         .sort_by! { |sim| Gem::Version.new(sim.os_version) }
-      UI.verbose("sorted compatible simulators: '#{result}'")
-      result = result
         .last
       UI.verbose("result: '#{result}' is nil?: #{result.nil?}")
       result

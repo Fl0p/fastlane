@@ -167,15 +167,23 @@ module Scan
     def self.compatibility_constraint(sim, device_name)
       latest_os = default_os_version(sim.os_type)
       UI.verbose("latest_os: '#{latest_os}' #{latest_os.nil?}  sim.name: '#{sim.name}' sim.os_version: '#{sim.os_version}' device_name: '#{device_name}'  ")
-      sim.name == device_name && (latest_os.nil? || Gem::Version.new(sim.os_version) <= latest_os)
+      result = sim.name == device_name && (latest_os.nil? || Gem::Version.new(sim.os_version) <= latest_os)
+      UI.verbose("compatibility_constraint result: '#{result}' result.nil?: #{result.nil?}")
+      result
     end
 
     def self.highest_compatible_simulator(simulators, device_name)
       UI.verbose("highest_compatible_simulator: #{simulators} #{device_name}")
       result = simulators
         .select { |sim| compatibility_constraint(sim, device_name) }
+      UI.verbose("compatible simulators: '#{result}'")
+      result = result
         .reverse
+      UI.verbose("reversed compatible simulators: '#{result}'")
+      result = result
         .sort_by! { |sim| Gem::Version.new(sim.os_version) }
+      UI.verbose("sorted compatible simulators: '#{result}'")
+      result = result
         .last
       UI.verbose("result: '#{result}' is nil?: #{result.nil?}")
       result

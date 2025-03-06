@@ -154,7 +154,7 @@ module Scan
           end
 
           os_version = FastlaneCore::DeviceManager.runtime_build_os_versions[runtime_build]
-          UI.verbose("os_version: '#{os_version}' #{os_version.nil?}")
+          UI.verbose("!!!os_version: '#{os_version}' #{os_version.nil?}")
           result = Gem::Version.new(os_version)
           UI.verbose("default_os_version result: '#{result}' result.nil?: #{result.nil?}")
           result

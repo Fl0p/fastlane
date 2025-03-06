@@ -158,7 +158,7 @@ module Scan
 
     def self.compatibility_constraint(sim, device_name)
       latest_os = default_os_version(sim.os_type)
-      UI.verbose("latest_os: #{latest_os}")
+      UI.verbose("latest_os: #{latest_os} #{latest_os.nil?} #{sim.name} #{device_name}")
       sim.name == device_name && (latest_os.nil? || Gem::Version.new(sim.os_version) <= latest_os)
     end
 

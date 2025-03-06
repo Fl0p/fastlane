@@ -163,11 +163,14 @@ module Scan
     end
 
     def self.highest_compatible_simulator(simulators, device_name)
-      simulators
+      UI.verbose("highest_compatible_simulator: #{simulators} #{device_name}")
+      result = simulators
         .select { |sim| compatibility_constraint(sim, device_name) }
         .reverse
         .sort_by! { |sim| Gem::Version.new(sim.os_version) }
         .last
+      UI.verbose("result: #{result}")
+      result
     end
 
     def self.regular_expression_for_split_on_whitespace_followed_by_parenthesized_version

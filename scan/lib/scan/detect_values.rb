@@ -153,7 +153,9 @@ module Scan
             UI.verbose("key: '#{key}' value: '#{value}'")
           end
 
-          result = Gem::Version.new(FastlaneCore::DeviceManager.runtime_build_os_versions[runtime_build])
+          os_version = FastlaneCore::DeviceManager.runtime_build_os_versions[runtime_build]
+          UI.verbose("os_version: '#{os_version}' #{os_version.nil?}")
+          result = Gem::Version.new(os_version)
           UI.verbose("default_os_version result: '#{result}' result.nil?: #{result.nil?}")
           result
         end
@@ -173,7 +175,7 @@ module Scan
     end
 
     def self.highest_compatible_simulator(simulators, device_name)
-      UI.verbose("highest_compatible_simulator: #{simulators} #{device_name}")
+      UI.verbose("highest_compatible_simulator: for '#{device_name}' from: #{simulators} ")
       result = simulators
         .select { |sim| compatibility_constraint(sim, device_name) }
       UI.verbose("compatible simulators: '#{result}'")
